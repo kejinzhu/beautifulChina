@@ -9,9 +9,7 @@
         
  
       
-        <div class="xzq_title">
-            <a href="javascript:;" class="xzq_title_text" style="cursor: default;">图游中国</a>
-        </div>
+
         <!--主要内容-->
         <div class="tyzg_section">
             <div class="w clearfix">

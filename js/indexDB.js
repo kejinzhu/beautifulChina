@@ -55,6 +55,19 @@ let indexDB = (function () {
     function getData(val){
 
         let openRequest = window.indexedDB.open(dbInfo.dbName,dbInfo.dbVersion);
+        //3-创建数据库时会触发三个事件之一，这三个事件，分别是upgradeneeded，success，onerror。
+        openRequest.addEventListener('upgradeneeded', function (e) {
+            //第一次打开数据库
+            db = e.target.result;
+            let storeNames = db.objectStoreNames;
+            //创建数据库的表格（或者叫数据库仓库）
+            if(!storeNames.contains('table')){
+                db.createObjectStore('table',{
+                    keyPath:"id",
+                    autoIncrement:true
+                })
+            }
+        });
         openRequest.addEventListener('success', function (e){
             let db = e.target.result;
             let tx = db.transaction(["table"], 'readwrite');
@@ -104,6 +117,9 @@ let indexDB = (function () {
                     //5-continue方法将光标移到下一个数据对象，如果当前数据对象已经是最后一个数据了，则光标指向null。
                 }
             };
+        });
+        openRequest.addEventListener('error', function (e) {
+            console.dir(e);
         });
     }
     return {
